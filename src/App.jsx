@@ -25,9 +25,8 @@ function App() {
           <button className='general-button'>Iniciar mi proyecto</button>
         </section>
       </main>
-      <footer>
 
-      </footer>
+       <a href="">My test a tag</a>
     </>
   )
 }
