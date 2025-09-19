@@ -1,5 +1,7 @@
 import tigerPicture from "./assets/tiger-min.jpg";
 import sobreMi from "./assets/sobre-mi.png";
+import neli from "./assets/neli.png";
+import honey_big from "./assets/honey-big.jpg";
 import "./App.css";
 
 function App() {
@@ -44,7 +46,7 @@ function App() {
 
         {/* Intro Section */}
         <section className="intro-section">
-          <img className="image-intro" src={tigerPicture} alt="tiger" style={{ opacity: "0.1" }} />
+          <img className="image-intro" src={tigerPicture} alt="tiger" />
           <p className="paragraph-intro serif">
             Conectando el carácter del espacio con una narrativa pictórica personal
           </p>
@@ -56,7 +58,7 @@ function App() {
             <img src={sobreMi} alt="" style={{ width: "100%" }} />
           </div>
 
-          <img src="" alt="" />
+          <img src={neli} alt="" style={{width:"219px", height: "178px"}}/>
           <p className="serif">Formación Superior y Experiencia Profesional</p>
           <p style={{ textAlign: "center" }}>
             Estudié en la Universidad Estatal Stroganov de Moscú, de Arte y Diseño Industrial, con
@@ -72,6 +74,8 @@ function App() {
         {/* Paintings Section */}
         <section className="pinturas">
           <h2 className="pinturas-title">Pinturas</h2>
+          <p className="serif">de caballete</p>
+          <img src={honey_big} alt="honey" style={{width:"428px"}}/>
         </section>
       </main>
       <footer></footer>
