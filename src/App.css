@@ -1,11 +1,11 @@
 * {
   margin: 0px;
   padding: 0px;
-  color: #1E1E1E;
+  color: #1e1e1e;
 }
 
 body {
-  background-color: #FFFCF7;
+  background-color: #fffcf7;
 }
 
 h1 {
@@ -35,7 +35,7 @@ header {
 }
 
 #header-id {
-  color: #1E1E1E;
+  color: #1e1e1e;
   size: 15px;
 
   display: grid;
@@ -43,27 +43,23 @@ header {
   align-items: baseline;
   margin: 46px 50px 0px 50px;
   gap: 20px;
-
 }
 
 .general-tab {
   text-decoration: none;
   grid-row: 1/2;
-  color: #1E1E1E;
+  color: #1e1e1e;
 }
 
 .tab1 {
   /* margin-left: 50PX; */
   grid-column: 1 / 2;
-
 }
 
 .tab2 {
   /* margin-left: 198px; */
   grid-column: 1 / 2;
   justify-self: flex-end;
-
-
 }
 
 .logo {
@@ -77,8 +73,6 @@ header {
   font-style: normal;
   width: max-content;
   text-align: center;
-
-
 }
 
 .tab3 {
@@ -89,7 +83,6 @@ header {
 .tab4 {
   grid-column: 5 / 6;
   justify-self: flex-end;
-
 }
 
 .hero-section {
@@ -110,6 +103,17 @@ header {
   position: relative;
   top: 35px;
 }
+
+/* .image-hero-container {
+  width: 203px;
+  height: 153px;
+  background-image: url("./assets/tiger.png");
+  background-size: cover;
+  background-position-y: 60%;
+  margin: 0px 20px;
+  position: relative;
+  bottom: 30px;
+} */
 
 .image-hero {
   width: 203px;
@@ -160,7 +164,7 @@ header {
   bottom: 20%;
   right: 30px;
   width: 21ch;
-  color: #FFFCF7 !important;
+  color: #fffcf7 !important;
 }
 
 .image-intro {
@@ -179,7 +183,7 @@ header {
   font-family: "Libre Baskerville", serif;
   font-weight: 400;
   font-style: normal;
-  color: #1E1E1E;
+  color: #1e1e1e;
 }
 
 .about-title-container {
@@ -202,7 +206,7 @@ header {
   font-family: "Libre Baskerville", serif;
   font-weight: 400;
   font-style: normal;
-  color: #1E1E1E;
+  color: #1e1e1e;
 }
 
 .pinturas-title {
@@ -212,5 +216,5 @@ header {
   font-family: "Libre Baskerville", serif;
   font-weight: 400;
   font-style: normal;
-  color: #1E1E1E;
+  color: #1e1e1e;
 }
