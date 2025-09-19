@@ -18,15 +18,41 @@ function App() {
         <section className='hero-section'>
           <div className='title-couple'>
             <h1>Mur<span className='spacing5'></span>a<span className='spacing1'></span>les</h1>
-            <img className='image-hero' src={tigerPicture} alt="" />
+            <img className='image-hero' src={tigerPicture} alt="tiger" />
             <h1 className='italic'>a medida,</h1>
           </div>
           <h1 className='title-bottom'><span className='italic'>pintura de</span> caballete</h1>
-          <button className='general-button'>Iniciar mi proyecto</button>
+          <p className='hero-paragraph'>El primer paso hacia tu obra única</p>
+          <button className='general-button' id='hero-button'>Iniciar mi proyecto</button>
+        </section>
+        <section className='intro-section'>
+          <img className='image-intro' src={tigerPicture} alt='tiger' />
+          <p className='paragraph-intro serif'>
+            Conectando el carácter del espacio con una narrativa pictórica personal
+          </p>
+        </section>
+        <section className='about-section'>
+          <div className="about-title-container">
+            <h2 className='about-title'>Sobre <span className='italic'>mí</span></h2>
+          </div>
+
+          <img src="" alt="" />
+          <p className='serif'>Formación Superior y Experiencia Profesional</p>
+          <p style={{ textAlign: "center" }}>
+            Estudié en la Universidad Estatal Stroganov de Moscú, de Arte y Diseño Industrial, con
+            <br></br>
+            especialización en diseño de espacios orientado a la creación artística y espacial.
+            <br></br>
+            Trabajé como artista y diseñadora en una empresa de tejidos para interiores.
+            <br></br>
+            Participé en múltiples exposiciones internacionales.</p>
+        </section>
+        <section className='pinturas'>
+          <h2 className='pinturas-title'>Pinturas</h2>
         </section>
       </main>
       <footer>
-        
+
       </footer>
     </>
   )

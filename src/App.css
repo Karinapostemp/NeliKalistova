@@ -4,6 +4,10 @@
   color: #1E1E1E;
 }
 
+body {
+  background-color: #FFFCF7;
+}
+
 h1 {
   font-family: "Libre Baskerville", serif;
   font-weight: 400;
@@ -12,10 +16,12 @@ h1 {
   letter-spacing: -7.91px;
 }
 
-h2 {}
-
 p {
   font-family: "Inter", sans-serif;
+}
+
+.hero-paragraph {
+  margin-bottom: 30px;
 }
 
 button {
@@ -101,7 +107,10 @@ header {
   font-family: "Libre Baskerville", serif;
   font-weight: 400;
   font-style: normal;
+  position: relative;
+  top: 35px;
 }
+
 .image-hero {
   width: 203px;
   height: 153px;
@@ -109,17 +118,18 @@ header {
   position: relative;
   bottom: 30px;
 }
+
 .title-bottom {
-  position: relative;
-  top: -35px;
+  /* position: relative;
+  top: -35px; */
 }
 
-.spacing1{
+.spacing1 {
   display: inline-block;
   width: 7px;
 }
 
-.spacing5{
+.spacing5 {
   display: inline-block;
   width: 3px;
 }
@@ -128,8 +138,79 @@ header {
   background-color: transparent;
   border-width: 1px;
   padding: 16px 117px;
-  font
 }
+
+#hero-button {
+  margin-bottom: 90px;
+}
+
 .italic {
   font-style: italic;
+}
+
+.intro-section {
+  position: relative;
+  width: 100vw;
+  height: fit-content;
+  margin-top: 200px;
+}
+
+.paragraph-intro {
+  position: absolute;
+  bottom: 20%;
+  right: 30px;
+  width: 21ch;
+  color: #FFFCF7 !important;
+}
+
+.image-intro {
+  width: 100vw;
+}
+
+.about-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.serif {
+  font-size: 28px;
+  letter-spacing: -1.96px;
+  font-family: "Libre Baskerville", serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #1E1E1E;
+}
+
+.about-title-container {
+  container-type: inline-size;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.about-title {
+  font-size: 26cqw;
+  letter-spacing: -25.7px !important;
+  white-space: nowrap;
+  text-align: center;
+  margin-top: 100px;
+  text-align: center;
+  font-family: "Libre Baskerville", serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #1E1E1E;
+}
+
+.pinturas-title {
+  font-size: 113px;
+  letter-spacing: -7.91px !important;
+  font-style: italic !important;
+  font-family: "Libre Baskerville", serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #1E1E1E;
 }
