@@ -3,8 +3,42 @@ import sobreMi from "./assets/sobre-mi.png";
 import neli from "./assets/neli.png";
 import honey_big from "./assets/honey-big.jpg";
 import "./App.css";
+import { useEffect } from "react";
 
 function App() {
+
+    const originalStyleSheet = document.styleSheets.item(2);
+  
+    useEffect(() => {
+      const BASE_WIDTH = 1200;
+      const styleSheet = originalStyleSheet;
+      if (!styleSheet?.cssRules) return;
+      const originalValues = [];
+      for (let i = 0; i < styleSheet.cssRules.length; i++) {
+        const rule = styleSheet.cssRules[i];
+        if (rule.style) {
+          for (let j = 0; j < rule.style.length; j++) {
+            const propName = rule.style[j];
+            if (rule.style[propName].endsWith("px")) {
+              const value = parseFloat(rule.style[propName]);
+              originalValues.push({ ruleIndex: i, propName, value });
+            }
+          }
+        }
+      }
+      const handleResize = () => {
+        const scale = window.innerWidth / BASE_WIDTH;
+        for (const item of originalValues) {
+          const { ruleIndex, propName, value } = item;
+          styleSheet.cssRules[ruleIndex].style[propName] = `${value * scale}px`;
+        }
+      };
+      handleResize();
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, [ window.innerWidth, originalStyleSheet]);
+  
+
   return (
     <>
       <header id="header-id">
@@ -59,7 +93,7 @@ function App() {
           </div>
 
           <img src={neli} alt="" style={{width:"219px", height: "178px"}}/>
-          <p className="serif">Formación Superior y Experiencia Profesional</p>
+          <p className="serif about-sub-title">Formación Superior y Experiencia Profesional</p>
           <p style={{ textAlign: "center" }}>
             Estudié en la Universidad Estatal Stroganov de Moscú, de Arte y Diseño Industrial, con
             <br></br>
@@ -75,7 +109,10 @@ function App() {
         <section className="pinturas">
           <h2 className="pinturas-title">Pinturas</h2>
           <p className="serif">de caballete</p>
-          <img src={honey_big} alt="honey" style={{width:"428px"}}/>
+          <div className="pictures-container" >
+            <img src={honey_big} alt="honey" style={{width:"428px"}}/>
+          </div>
+          
         </section>
       </main>
       <footer></footer>
