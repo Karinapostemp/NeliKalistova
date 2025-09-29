@@ -44,15 +44,21 @@ header {
 #header-id {
   color: #1e1e1e;
   size: 15px;
-
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   align-items: baseline;
-  margin: 46px 50px 0px 50px;
+  margin: 0px 50px 0px 50px;
   gap: 20px;
 }
 
 .general-tab {
+  text-decoration: none;
+  grid-row: 1/2;
+  color: #1e1e1e;
+  margin-top: 49px;
+}
+
+.general-tab-logo {
   text-decoration: none;
   grid-row: 1/2;
   color: #1e1e1e;
@@ -97,7 +103,7 @@ header {
   flex-direction: column;
   align-items: center;
   gap: -20px;
-  margin-top: 233px;
+  margin-top: 253px;
 }
 
 .title-couple {
@@ -107,8 +113,10 @@ header {
   font-family: "Libre Baskerville", serif;
   font-weight: 400;
   font-style: normal;
+}
+.hero-title {
   position: relative;
-  top: 35px;
+  top: 30px;
 }
 
 /* .image-hero-container {
@@ -126,8 +134,7 @@ header {
   width: 203px;
   height: 153px;
   margin: 0px 20px;
-  position: relative;
-  bottom: 30px;
+
 }
 
 .title-bottom {
@@ -245,8 +252,10 @@ header {
 
 .pictures-container {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  align-items: baseline;
+  grid-template-columns: repeat(5, 204px);
   margin: 110px 50px 0px 50px;
   gap: 20px;
+}
+.pictures-container p {
+  letter-spacing: -0.3px;
 }
