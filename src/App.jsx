@@ -12,41 +12,75 @@ import eye from "./assets/eye.png";
 import landscape from "./assets/landscape.png";
 import landscape_2 from "./assets/landscape-2.png";
 import "./App.css";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 function App() {
+  const BASE_WIDTH = 1200;
+  const originalValuesRef = useRef([]);
+  const styleSheetRef = useRef(null);
+  const scaleRef = useRef(1);
 
-  const originalStyleSheet = document.styleSheets.item(2);
+  const findStyleSheet = () => {
+    return document.styleSheets.item(2);
+  };
 
   useEffect(() => {
-    const BASE_WIDTH = 1200;
-    const styleSheet = originalStyleSheet;
-    if (!styleSheet?.cssRules) return;
-    const originalValues = [];
-    for (let i = 0; i < styleSheet.cssRules.length; i++) {
-      const rule = styleSheet.cssRules[i];
-      if (rule.style) {
-        for (let j = 0; j < rule.style.length; j++) {
-          const propName = rule.style[j];
-          if (rule.style[propName].endsWith("px")) {
-            const value = parseFloat(rule.style[propName]);
-            originalValues.push({ ruleIndex: i, propName, value });
+    try {
+      const styleSheet = findStyleSheet();
+      if (!styleSheet?.cssRules) return;
+      const originals = [];
+      for (let i = 0; i < styleSheet.cssRules.length; i++) {
+        const rule = styleSheet.cssRules[i];
+        if (rule.style) {
+          for (let j = 0; j < rule.style.length; j++) {
+            const propName = rule.style[j];
+            const propValue = rule.style[propName];
+            if (propValue.endsWith("px")) {
+              const value = parseFloat(propValue);
+              originals.push({ ruleIndex: i, propName, value });
+            }
           }
         }
       }
+      originalValuesRef.current = originals;
+      styleSheetRef.current = styleSheet;
+    } catch (err) {
+      console.warn("Cannot access stylesheet:", err);
     }
+  }, []);
+
+  useEffect(() => {
+    let rafId;
     const handleResize = () => {
-      const scale = window.innerWidth / BASE_WIDTH;
-      for (const item of originalValues) {
-        const { ruleIndex, propName, value } = item;
-        styleSheet.cssRules[ruleIndex].style[propName] = `${value * scale}px`;
-      }
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        const styleSheet = styleSheetRef.current;
+        if (!styleSheet?.cssRules || originalValuesRef.current.length === 0) return;
+        const newScale = window.innerWidth / BASE_WIDTH;
+        if (newScale === scaleRef.current) return;
+        scaleRef.current = newScale;
+        for (const { ruleIndex, propName, value } of originalValuesRef.current) {
+          styleSheet.cssRules[ruleIndex].style[propName] = `${value * newScale}px`;
+        }
+      });
     };
     handleResize();
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [window.innerWidth, originalStyleSheet]);
-
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      if (rafId) cancelAnimationFrame(rafId);
+      const styleSheet = styleSheetRef.current;
+      if (styleSheet?.cssRules && originalValuesRef.current.length > 0) {
+        for (const { ruleIndex, propName, value } of originalValuesRef.current) {
+          try {
+            styleSheet.cssRules[ruleIndex].style[propName] = `${value}px`;
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      }
+    };
+  }, []);
 
   return (
     <>
@@ -101,7 +135,7 @@ function App() {
             <img src={sobreMi} alt="" style={{ width: "100%" }} />
           </div>
 
-          <img src={neli} alt="" style={{ width: "219px", height: "178px" }} />
+          <img src={neli} alt="" className="neli" />
           <p className="serif about-sub-title">Formación Superior y Experiencia Profesional</p>
           <p style={{ textAlign: "center" }}>
             Estudié en la Universidad Estatal Stroganov de Moscú, de Arte y Diseño Industrial, con
@@ -118,30 +152,100 @@ function App() {
         <section className="pinturas">
           <h2 className="pinturas-title">Pinturas</h2>
           <p className="serif">de caballete</p>
-          <div className="pictures-container" >
-            <img src={honey_big} alt="honey" style={{ width: "428px", height: "428px", gridColumn: "1 / 3", gridRow: "1 / 3" }} />
-            <p style={{ height: "190px", gridColumn: "1 / 3", gridRow: "3 / 4" }}><b>Título: “Honey”</b><br />Óleo sobre lienzo, 25×25 cm, 2025</p>
-            <img src={honey_small_left} alt="honey" style={{ width: "204px", height: "204px", gridColumn: "4 / 5", gridRow: "2 / 3" }} />
-            <img src={honey_small_right} alt="honey" style={{ width: "204px", height: "204px", gridColumn: "5 / 6", gridRow: "2 / 3" }} />
-            <p style={{ gridColumn: "5 / 6", gridRow: "1 / 3" }}>Pinté esta pieza después de un<br /> desayuno: miel, un huevo caliente <br />y abejas en la ventana del patio. <br />Quise atrapar el instante <br />pegajoso y luminoso, casi <br />ceremonial.</p>
+          <div className="pictures-container">
+            <img src={honey_big} alt="honey" className="honey-big" />
+            <p className="picture-title title-honey">
+              <b>Título: “Honey”</b>
+              <br />
+              Óleo sobre lienzo, 25×25 cm, 2025
+            </p>
+            <img src={honey_small_left} alt="honey" className="honey-small-left" />
+            <img src={honey_small_right} alt="honey" className="honey-small-right" />
+            <p className="description-honey">
+              Pinté esta pieza después de un
+              <br /> desayuno: miel, un huevo caliente <br />y abejas en la ventana del patio.{" "}
+              <br />
+              Quise atrapar el instante <br />
+              pegajoso y luminoso, casi <br />
+              ceremonial.
+            </p>
 
-            <p style={{ gridColumn: "1/ 2", gridRow: "5 / 6" }}>Un tigre emerge entre corrientes <br />rojas y azules, encarnando <br />fuerza, tensión y vitalidad. El <br />contraste cromático convierte la <br />escena en un estallido de energía <br />y movimiento.</p>
-            <img src={tiger_small} alt="tiger" style={{ width: "204px", height: "247px", gridColumn: "2 / 3", gridRow: "4 / 5" }} />
-            <p style={{gridColumn: "2 / 3", gridRow: "5 / 6" }}><b>Título: “Tiger”</b><br />Acrílico, 60×75 cm, 2023</p>
-            <img src={vulnerable} alt="vulnerable" style={{ width: "428px", height: "601px", gridColumn: "3 / 4", gridRow: "4 / 6" }} />
-            <p style={{ gridColumn: "3 / 4", gridRow: "6 / 7" }}><b>Título: “Vulnerable”</b><br />Óleo sobre carton, 60×75 cm, 2021</p>
-            <p style={{ gridColumn: "5 / 6", gridRow: "4 / 5" }}>Una vulnerabilidad reconocible<br /> vive en la figura desnuda y frágil;<br /> no hay tensión: la escena la <br />sostiene la materia pictórica, no<br /> la ansiedad. El felino —cazador y <br />talismán— hace de guardián, y la <br />intimidad se vuelve una pequeña <br />fábula sobre confianza y amparo.</p>
-            <img src={woman} alt="woman"style={{ width: "428px", height: "428px", gridColumn: "1 / 3", gridRow: "7 / 9" }} />
-            <p  style={{height: "241px", gridColumn: "1 / 2", gridRow: "9 / 10" }}><b>Título: “Another world”</b><br />Óleo sobre lienzo, 100×100 cm, 2025</p>
-            <p  style={{ gridColumn: "4 / 5", gridRow: "7 / 8" }}>Los personajes viven sobre el <br />rostro de Mahākala, deidad <br />budista que protege contra el <br />mal. La tierra se funde con su <br />máscara y el ojo en el musgo <br />recuerda una fuerza que siempre<br /> observa. La joven y el caballo <br />representan vulnerabilidad y <br />confianza, mientras la figura<br /> oscura custodia el misterio. </p>
-            <p style={{ gridColumn: "5 / 6", gridRow: "7/8" }}>La obra habla de cómo el mito se <br />convierte en suelo de nuestras<br /> emociones y de cómo en la <br />fragilidad también nace la fuerza.</p>
-            <img src={cat} alt="cat" style={{ width: "204px", height: "204px", gridColumn: "4 / 5", gridRow: "8 / 9" }}/>
-            <img src={eye} alt="eye" style={{ width: "204px", height: "204px", gridColumn: "5 / 6", gridRow: "8 / 9" }}/>
-            <img src={landscape} alt="landscape" style={{ width: "204px", height: "247px", gridColumn: "1 / 2", gridRow: "10 / 11" }}/>
-            <p  style={{ gridColumn: "1 / 2", gridRow: "11 / 12" }}><b>Título: “Apunte"</b><br />Acrílico sobre papel, 42×59 cm, 2022</p>
-            <img src={landscape_2} alt="landscape2"style={{ width: "428px", height: "601px", gridColumn: "3 / 5", gridRow: "10 / 12" }} />
-            <p  style={{ gridColumn: "3 / 4", gridRow: "12 /13" }}><b>Título: “Apunte"</b><br />Acrílico sobre papel, 42×59 cm, 2022</p>
-            <p> Pintado directamente del natural <br />durante un pequeño viaje en el <br />marco de un festival, este apunte<br /> refleja la frescura del instante, los <br />cambios de color y la sensación<br /> de estar presente en el lugar.</p>
+            <p className="description-tiger">
+              Un tigre emerge entre corrientes <br />
+              rojas y azules, encarnando <br />
+              fuerza, tensión y vitalidad. El <br />
+              contraste cromático convierte la <br />
+              escena en un estallido de energía <br />y movimiento.
+            </p>
+            <img src={tiger_small} alt="tiger" className="tiger-small" />
+            <p className="picture-title title-tiger">
+              <b>Título: “Tiger”</b>
+              <br />
+              Acrílico, 60×75 cm, 2023
+            </p>
+            <img src={vulnerable} alt="vulnerable" className="vulnerable" />
+            <p className="picture-title title-vulnerable">
+              <b>Título: “Vulnerable”</b>
+              <br />
+              Óleo sobre carton, 60×75 cm, 2021
+            </p>
+            <p className="description-vulnerable">
+              Una vulnerabilidad reconocible
+              <br /> vive en la figura desnuda y frágil;
+              <br /> no hay tensión: la escena la <br />
+              sostiene la materia pictórica, no
+              <br /> la ansiedad. El felino —cazador y <br />
+              talismán— hace de guardián, y la <br />
+              intimidad se vuelve una pequeña <br />
+              fábula sobre confianza y amparo.
+            </p>
+            <img src={woman} alt="woman" className="woman" />
+            <p className="picture-title title-woman">
+              <b>Título: “Another world”</b>
+              <br />
+              Óleo sobre lienzo, 100×100 cm, 2025
+            </p>
+            <p className="description-cat">
+              Los personajes viven sobre el <br />
+              rostro de Mahākala, deidad <br />
+              budista que protege contra el <br />
+              mal. La tierra se funde con su <br />
+              máscara y el ojo en el musgo <br />
+              recuerda una fuerza que siempre
+              <br /> observa. La joven y el caballo <br />
+              representan vulnerabilidad y <br />
+              confianza, mientras la figura
+              <br /> oscura custodia el misterio.{" "}
+            </p>
+            <p className="description-eye">
+              La obra habla de cómo el mito se <br />
+              convierte en suelo de nuestras
+              <br /> emociones y de cómo en la <br />
+              fragilidad también nace la fuerza.
+            </p>
+            <img src={cat} alt="cat" className="cat" />
+            <img src={eye} alt="eye" className="eye" />
+            <img src={landscape} alt="landscape" className="landscape" />
+            <p className="picture-title title-landscape">
+              <b>Título: “Apunte"</b>
+              <br />
+              Acrílico sobre papel, 42×59 cm, 2022
+            </p>
+            <img src={landscape_2} alt="landscape2" className="landscape-2" />
+            <p className="picture-title title-landscape-2">
+              <b>Título: “Apunte"</b>
+              <br />
+              Acrílico sobre papel, 42×59 cm, 2022
+            </p>
+            <p className="description-landscape-2">
+              {" "}
+              Pintado directamente del natural <br />
+              durante un pequeño viaje en el <br />
+              marco de un festival, este apunte
+              <br /> refleja la frescura del instante, los <br />
+              cambios de color y la sensación
+              <br /> de estar presente en el lugar.
+            </p>
           </div>
         </section>
       </main>
